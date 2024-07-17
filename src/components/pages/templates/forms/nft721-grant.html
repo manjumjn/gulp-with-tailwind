@@ -1,0 +1,193 @@
+<form
+    action="#"
+    class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+    data-tab-content="nft721-grant"
+    id="nft721-grant-form"
+>
+  <button
+      class="btn mb-2"
+      onclick="nft721_grant_docs.showModal()"
+      type="button"
+  >
+    Docs for pay nft721 grant
+  </button>
+  <div>
+    <label class="label label-text" for="nft721-grant-title">Title</label>
+    <input
+        class="input input-bordered w-full"
+        id="nft721-grant-title"
+        name="title"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="nft721-grant-wallet"
+    >Receiver wallet address</label
+    >
+    <input
+        class="input input-bordered w-full"
+        id="nft721-grant-wallet"
+        name="wallet"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="nft721-grant-token_id">ID</label>
+    <input
+        class="input input-bordered w-full"
+        id="nft721-grant-token_id"
+        name="token_id"
+        placeholder="Type here token ID"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="nft721-grant-token_address"
+    >Token address</label
+    >
+    <input
+        class="input input-bordered w-full"
+        id="nft721-grant-token_address"
+        name="token_address"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="nft721-grant-description"
+    >Description</label
+    >
+    <textarea
+        class="textarea textarea-bordered w-full"
+        id="nft721-grant-description"
+        name="description"
+        placeholder="Type your description"
+    ></textarea>
+  </div>
+  <button class="btn btn-primary mt-2">Submit Grant</button>
+
+  <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+          const validation = new window.JustValidate("#nft721-grant-form");
+
+          validation
+              .addField("#nft721-grant-title", [
+                  {
+                      rule: "required",
+                      errorMessage: "Title is required",
+                  },
+              ])
+              .addField("#nft721-grant-wallet", [
+                  {
+                      rule: "required",
+                      errorMessage: "Wallet address is required",
+                  },
+                  {
+                      rule: "minLength",
+                      value: 42,
+                      errorMessage: "Wallet address must be 42 characters long",
+                  },
+                  {
+                      rule: "maxLength",
+                      value: 42,
+                      errorMessage: "Wallet address must be 42 characters long",
+                  },
+              ])
+              .addField("#nft721-grant-token_id", [
+                  {
+                      rule: "required",
+                      errorMessage: "Token ID is required",
+                  },
+              ])
+              .addField("#nft721-grant-description", [
+                  {
+                      rule: "required",
+                      errorMessage: "Description is required",
+                  },
+              ])
+              .addField("#nft721-grant-token_address", [
+                  {
+                      rule: "required",
+                      errorMessage: "Token address is required",
+                  },
+                  {
+                      rule: "minLength",
+                      value: 42,
+                      errorMessage: "Token address must be 42 characters long",
+                  },
+                  {
+                      rule: "maxLength",
+                      value: 42,
+                      errorMessage: "Token address must be 42 characters long",
+                  },
+              ])
+              .onSuccess((event) => {
+                  event.preventDefault();
+                  addOverlay("nft721-grant-form");
+                  const formData = new FormData(event.target);
+                  const data = Object.fromEntries(formData);
+                  setTimeout(() => {
+                      removeOverlay("nft721-grant-form");
+                  }, 1000);
+
+                  console.log("Form data:", data);
+                  showToast("Paying nft721 grant successfuly!");
+              });
+      });
+  </script>
+</form>
+
+<dialog class="modal" id="nft721_grant_docs">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Form Explanation</h3>
+    <div class="space-y-4 py-4">
+      <p>
+        This form is designed to collect all necessary information for issuing a
+        new NFT721 grant within the MiniDAO platform. Each field in the form
+        collects specific details required to process and approve the grant
+        request:
+      </p>
+      <ul class="space-y-2">
+        <li>
+          <strong>Title:</strong> Provide a brief and descriptive title for the
+          grant. This helps others understand the purpose of the grant.
+        </li>
+
+        <li>
+          <strong>Receiver Wallet Address:</strong> Enter the cryptocurrency
+          wallet address where the NFT will be sent. Ensure that the address is
+          capable of receiving NFT721 tokens.
+        </li>
+
+        <li>
+          <strong>ID (Token ID):</strong> Specify the unique identifier (ID) of
+          the NFT to be granted. This ensures the correct NFT is transferred.
+        </li>
+
+        <li>
+          <strong>Token Address:</strong> Provide the smart contract address of
+          the NFT721 token. This ensures the correct type of NFT is transferred.
+        </li>
+
+        <li>
+          <strong>Description:</strong> Give a detailed description outlining
+          the goals and requirements of the grant. Include any relevant
+          information that will help in evaluating the grant request.
+        </li>
+      </ul>
+      <p>
+        Once all fields are filled out, the user can submit the form by clicking
+        the "Submit Grant" button. The provided information will then be
+        processed for grant issuance.
+      </p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>

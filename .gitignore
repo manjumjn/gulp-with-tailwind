@@ -4,3 +4,4 @@ build
 src/css/*.css
 *.lock
 *.DS_Store
+!/dist/

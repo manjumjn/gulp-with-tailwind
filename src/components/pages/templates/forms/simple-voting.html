@@ -1,0 +1,124 @@
+<form
+    action="#"
+    class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+    data-tab-content="simple-voting"
+    id="simple-voting-form"
+>
+  <button
+      class="btn mb-2"
+      onclick="simple_voting_docs.showModal()"
+      type="button"
+  >
+    Docs for simple voting
+  </button>
+  <div>
+    <label class="label label-text" for="simple_voting_title">Title</label>
+    <input
+        class="input input-bordered w-full"
+        id="simple_voting_title"
+        name="title"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="simple_voting_description"
+    >Description</label
+    >
+    <textarea
+        class="textarea textarea-bordered w-full"
+        id="simple_voting_description"
+        name="description"
+        placeholder="Type your description"
+    ></textarea>
+  </div>
+  <button class="btn btn-primary mt-2">Submit Proposal</button>
+
+  <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+          const validation = new window.JustValidate("#simple-voting-form");
+
+          validation
+              .addField("#simple_voting_title", [
+                  {
+                      rule: "required",
+                      errorMessage: "Title is required",
+                  },
+              ])
+              .addField("#simple_voting_description", [
+                  {
+                      rule: "required",
+                      errorMessage: "Description is required",
+                  },
+              ])
+              .onSuccess(async (event) => {
+                  event.preventDefault();
+                  const formData = new FormData(event.target);
+                  const data = Object.fromEntries(formData);
+                  console.log(data);
+
+                  const targets = ["0x0000000000000000000000000000000000000000"];
+                  const values = [0];
+                  const calldatas = ["0x00"];
+
+                  try {
+                      addOverlay("simple-voting-form");
+                      console.log(data.description);
+                      const tx = await mini_contract.proposeWithTitle(
+                          targets,
+                          values,
+                          calldatas,
+                          data.description,
+                          data.title
+                      );
+                      await tx.wait();
+                      reloadPosts();
+                      showToast("Create simple vote successfuly!");
+                  } catch (error) {
+                      console.log(error);
+                      showToast("Error simple voting!", "error");
+                  } finally {
+                      removeOverlay("simple-voting-form");
+                      document.getElementById("simple-voting-form").reset();
+                  }
+              });
+      });
+  </script>
+</form>
+
+<dialog class="modal" id="simple_voting_docs">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Form Explanation</h3>
+    <div class="space-y-4 py-4">
+      <p>
+        This form is designed to collect all necessary information for creating
+        a new voting proposal within the MiniDAO platform. Each field in the
+        form collects specific details required to process and initiate the
+        voting process:
+      </p>
+      <ul class="space-y-2">
+        <li>
+          <strong>Title:</strong> Provide a brief and descriptive title for the
+          voting proposal. This helps others understand the subject of the vote.
+        </li>
+
+        <li>
+          <strong>Description:</strong> Give a detailed description outlining
+          the purpose, context, and any relevant details of the voting proposal.
+          Include any information that voters need to make an informed decision.
+        </li>
+      </ul>
+      <p>
+        Once both fields are filled out, the user can submit the form by
+        clicking the "Submit Proposal" button. The provided information will
+        then be processed to initiate the voting process.
+      </p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>

@@ -1,0 +1,8 @@
+[
+  "constructor(address _timelock) payable",
+  "function onERC721Received(address, address, uint256, bytes) returns (bytes4)",
+  "function owner() view returns (address)",
+  "function releaseERC20Token(address to, uint256 amount, address token)",
+  "function releaseERC721Token(address to, uint256 id, address token)",
+  "function releaseNativeToken(address to, uint256 amount)"
+]

@@ -1,0 +1,92 @@
+<div class="flex items-center justify-between">
+  <p class="text-3xl font-medium">Proposals</p>
+  <div class="flex items-center gap-2">
+    <button class="btn" onclick="reloadPosts()">
+      Update <span class="-ml-1 hidden sm:block">posts</span>
+    </button>
+    <div class="dropdown dropdown-end" id="filter-dropdown">
+      <div class="btn m-1" id="filter-button" role="button" tabindex="0">
+        Filters
+      </div>
+      <div
+          class="dropdown-content menu bg-base-100 rounded-box z-20 w-52 p-2 shadow"
+          tabindex="0"
+      >
+        <input
+            class="input input-bordered flex max-h-10 w-full items-center gap-2"
+            id="search-input"
+            placeholder="Search"
+            type="text"
+        />
+        <div class="divider">AND</div>
+        <ul id="filter-dropdown-content"></ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // search
+    const searchInput = document.getElementById("search-input");
+    const search_key = localStorage.getItem("search_key");
+
+    if (search_key) {
+        searchInput.value = search_key;
+    }
+
+    searchInput.addEventListener("input", () => {
+        localStorage.setItem("search_key", searchInput.value);
+        reloadPosts();
+    });
+
+    // loading statuses
+    const statusArray = [
+        "All",
+        "Pending",
+        "Active",
+        "Canceled",
+        "Defeated",
+        "Succeeded",
+        "Queued",
+        "Expired",
+        "Executed",
+    ];
+    statusArray.forEach((status) => {
+        const statusElement = document.createElement("li");
+        statusElement.innerHTML = `<a data-filter="${status}" class="flex items-center justify-between">${status}</a>`;
+        document
+            .getElementById("filter-dropdown-content")
+            .appendChild(statusElement);
+    });
+
+    const filter_buttons = document.querySelectorAll("[data-filter]");
+
+    const resetActive = () => {
+        filter_buttons.forEach((_btn) => {
+            _btn.classList.remove("active");
+        });
+    };
+
+    window.addEventListener("DOMContentLoaded", () => {
+        const active_status = localStorage.getItem("status");
+        filter_buttons.forEach((btn) => {
+            const btn_status = btn.getAttribute("data-filter");
+            if (active_status === btn_status) {
+                resetActive();
+                btn.classList.add("active");
+            }
+        });
+    });
+
+    filter_buttons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+            const active_status = btn.getAttribute("data-filter");
+            resetActive();
+
+            btn.classList.add("active");
+            localStorage.setItem("status", active_status);
+
+            reloadPosts();
+        });
+    });
+</script>

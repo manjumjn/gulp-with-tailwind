@@ -1,0 +1,340 @@
+const mini_abi = [
+  "constructor(address _token, address _timelock, string _name, uint48 _votingDelay, uint32 _votingPeriod, uint256 _quorumValue)",
+  "error CheckpointUnorderedInsertion()",
+  "error FailedInnerCall()",
+  "error GovernorAlreadyCastVote(address voter)",
+  "error GovernorAlreadyQueuedProposal(uint256 proposalId)",
+  "error GovernorDisabledDeposit()",
+  "error GovernorInsufficientProposerVotes(address proposer, uint256 votes, uint256 threshold)",
+  "error GovernorInvalidProposalLength(uint256 targets, uint256 calldatas, uint256 values)",
+  "error GovernorInvalidQuorumFraction(uint256 quorumNumerator, uint256 quorumDenominator)",
+  "error GovernorInvalidSignature(address voter)",
+  "error GovernorInvalidVoteType()",
+  "error GovernorInvalidVotingPeriod(uint256 votingPeriod)",
+  "error GovernorNonexistentProposal(uint256 proposalId)",
+  "error GovernorNotQueuedProposal(uint256 proposalId)",
+  "error GovernorOnlyExecutor(address account)",
+  "error GovernorOnlyProposer(address account)",
+  "error GovernorQueueNotImplemented()",
+  "error GovernorRestrictedProposer(address proposer)",
+  "error GovernorUnexpectedProposalState(uint256 proposalId, uint8 current, bytes32 expectedStates)",
+  "error InvalidAccountNonce(address account, uint256 currentNonce)",
+  "error InvalidShortString()",
+  "error QueueEmpty()",
+  "error QueueFull()",
+  "error SafeCastOverflowedUintDowncast(uint8 bits, uint256 value)",
+  "error StringTooLong(string str)",
+  "event EIP712DomainChanged()",
+  "event ProposalCanceled(uint256 proposalId)",
+  "event ProposalCreated(uint256 proposalId, address proposer, address[] targets, uint256[] values, string[] signatures, bytes[] calldatas, uint256 voteStart, uint256 voteEnd, string description)",
+  "event ProposalExecuted(uint256 proposalId)",
+  "event ProposalQueued(uint256 proposalId, uint256 etaSeconds)",
+  "event ProposalThresholdSet(uint256 oldProposalThreshold, uint256 newProposalThreshold)",
+  "event QuorumNumeratorUpdated(uint256 oldQuorumNumerator, uint256 newQuorumNumerator)",
+  "event TimelockChange(address oldTimelock, address newTimelock)",
+  "event VoteCast(address indexed voter, uint256 proposalId, uint8 support, uint256 weight, string reason)",
+  "event VoteCastWithParams(address indexed voter, uint256 proposalId, uint8 support, uint256 weight, string reason, bytes params)",
+  "event VotingDelaySet(uint256 oldVotingDelay, uint256 newVotingDelay)",
+  "event VotingPeriodSet(uint256 oldVotingPeriod, uint256 newVotingPeriod)",
+  "function BALLOT_TYPEHASH() view returns (bytes32)",
+  "function CLOCK_MODE() view returns (string)",
+  "function COUNTING_MODE() pure returns (string)",
+  "function EXTENDED_BALLOT_TYPEHASH() view returns (bytes32)",
+  "function cancel(address[] targets, uint256[] values, bytes[] calldatas, bytes32 descriptionHash) returns (uint256)",
+  "function castVote(uint256 proposalId, uint8 support) returns (uint256)",
+  "function castVoteBySig(uint256 proposalId, uint8 support, address voter, bytes signature) returns (uint256)",
+  "function castVoteWithReason(uint256 proposalId, uint8 support, string reason) returns (uint256)",
+  "function castVoteWithReasonAndParams(uint256 proposalId, uint8 support, string reason, bytes params) returns (uint256)",
+  "function castVoteWithReasonAndParamsBySig(uint256 proposalId, uint8 support, address voter, string reason, bytes params, bytes signature) returns (uint256)",
+  "function clock() view returns (uint48)",
+  "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
+  "function execute(address[] targets, uint256[] values, bytes[] calldatas, bytes32 descriptionHash) payable returns (uint256)",
+  "function getVotes(address account, uint256 timepoint) view returns (uint256)",
+  "function getVotesWithParams(address account, uint256 timepoint, bytes params) view returns (uint256)",
+  "function hasVoted(uint256 proposalId, address account) view returns (bool)",
+  "function hashProposal(address[] targets, uint256[] values, bytes[] calldatas, bytes32 descriptionHash) pure returns (uint256)",
+  "function name() view returns (string)",
+  "function nonces(address owner) view returns (uint256)",
+  "function onERC1155BatchReceived(address, address, uint256[], uint256[], bytes) returns (bytes4)",
+  "function onERC1155Received(address, address, uint256, uint256, bytes) returns (bytes4)",
+  "function onERC721Received(address, address, uint256, bytes) returns (bytes4)",
+  "function proposalDeadline(uint256 proposalId) view returns (uint256)",
+  "function proposalEta(uint256 proposalId) view returns (uint256)",
+  "function proposalNeedsQueuing(uint256 proposalId) view returns (bool)",
+  "function proposalProposer(uint256 proposalId) view returns (address)",
+  "function proposalSnapshot(uint256 proposalId) view returns (uint256)",
+  "function proposalThreshold() view returns (uint256)",
+  "function proposalVotes(uint256 proposalId) view returns (uint256 againstVotes, uint256 forVotes, uint256 abstainVotes)",
+  "function propose(address[] targets, uint256[] values, bytes[] calldatas, string description) returns (uint256)",
+  "function proposeWithTitle(address[] targets, uint256[] values, bytes[] calldatas, string description, string title) returns (uint256)",
+  "function queue(address[] targets, uint256[] values, bytes[] calldatas, bytes32 descriptionHash) returns (uint256)",
+  "function quorum(uint256 blockNumber) view returns (uint256)",
+  "function quorumDenominator() view returns (uint256)",
+  "function quorumNumerator(uint256 timepoint) view returns (uint256)",
+  "function quorumNumerator() view returns (uint256)",
+  "function relay(address target, uint256 value, bytes data) payable",
+  "function setProposalThreshold(uint256 newProposalThreshold)",
+  "function setVotingDelay(uint48 newVotingDelay)",
+  "function setVotingPeriod(uint32 newVotingPeriod)",
+  "function state(uint256 proposalId) view returns (uint8)",
+  "function supportsInterface(bytes4 interfaceId) view returns (bool)",
+  "function timelock() view returns (address)",
+  "function titles(uint256) view returns (string)",
+  "function token() view returns (address)",
+  "function updateQuorumNumerator(uint256 newQuorumNumerator)",
+  "function updateTimelock(address newTimelock)",
+  "function version() view returns (string)",
+  "function votingDelay() view returns (uint256)",
+  "function votingPeriod() view returns (uint256)",
+];
+
+const super_abi = [
+  "function governor() view returns (address)",
+  "function myAddr() view returns (address)",
+  "function timeLock() view returns (address)",
+  "function token() view returns (address)",
+  "function treasury() view returns (address)",
+];
+
+const token_abi = [
+  "constructor(address _timelock, string _name, string _symbol)",
+  "error CheckpointUnorderedInsertion()",
+  "error ECDSAInvalidSignature()",
+  "error ECDSAInvalidSignatureLength(uint256 length)",
+  "error ECDSAInvalidSignatureS(bytes32 s)",
+  "error ERC20ExceededSafeSupply(uint256 increasedSupply, uint256 cap)",
+  "error ERC20InsufficientAllowance(address spender, uint256 allowance, uint256 needed)",
+  "error ERC20InsufficientBalance(address sender, uint256 balance, uint256 needed)",
+  "error ERC20InvalidApprover(address approver)",
+  "error ERC20InvalidReceiver(address receiver)",
+  "error ERC20InvalidSender(address sender)",
+  "error ERC20InvalidSpender(address spender)",
+  "error ERC2612ExpiredSignature(uint256 deadline)",
+  "error ERC2612InvalidSigner(address signer, address owner)",
+  "error ERC5805FutureLookup(uint256 timepoint, uint48 clock)",
+  "error ERC6372InconsistentClock()",
+  "error InvalidAccountNonce(address account, uint256 currentNonce)",
+  "error InvalidShortString()",
+  "error SafeCastOverflowedUintDowncast(uint8 bits, uint256 value)",
+  "error StringTooLong(string str)",
+  "error VotesExpiredSignature(uint256 expiry)",
+  "event Approval(address indexed owner, address indexed spender, uint256 value)",
+  "event DelegateChanged(address indexed delegator, address indexed fromDelegate, address indexed toDelegate)",
+  "event DelegateVotesChanged(address indexed delegate, uint256 previousVotes, uint256 newVotes)",
+  "event EIP712DomainChanged()",
+  "event Transfer(address indexed from, address indexed to, uint256 value)",
+  "function CLOCK_MODE() pure returns (string)",
+  "function DOMAIN_SEPARATOR() view returns (bytes32)",
+  "function allowance(address owner, address spender) view returns (uint256)",
+  "function approve(address spender, uint256 value) returns (bool)",
+  "function balanceOf(address account) view returns (uint256)",
+  "function checkpoints(address account, uint32 pos) view returns (tuple(uint48 _key, uint208 _value))",
+  "function clock() view returns (uint48)",
+  "function decimals() view returns (uint8)",
+  "function delegate(address delegatee)",
+  "function delegateBySig(address delegatee, uint256 nonce, uint256 expiry, uint8 v, bytes32 r, bytes32 s)",
+  "function delegates(address account) view returns (address)",
+  "function eip712Domain() view returns (bytes1 fields, string name, string version, uint256 chainId, address verifyingContract, bytes32 salt, uint256[] extensions)",
+  "function getPastTotalSupply(uint256 timepoint) view returns (uint256)",
+  "function getPastVotes(address account, uint256 timepoint) view returns (uint256)",
+  "function getVotes(address account) view returns (uint256)",
+  "function mint(address to, uint256 amount)",
+  "function mintBatch(address[] to, uint256[] amount)",
+  "function name() view returns (string)",
+  "function nonces(address _owner) view returns (uint256)",
+  "function numCheckpoints(address account) view returns (uint32)",
+  "function owner() view returns (address)",
+  "function permit(address owner, address spender, uint256 value, uint256 deadline, uint8 v, bytes32 r, bytes32 s)",
+  "function symbol() view returns (string)",
+  "function tokenDistribution(address[] to, uint256[] amount)",
+  "function totalSupply() view returns (uint256)",
+  "function transfer(address to, uint256 value) returns (bool)",
+  "function transferFrom(address from, address to, uint256 value) returns (bool)",
+];
+
+const treasury_abi = [
+  "constructor(address _timelock) payable",
+  "function onERC721Received(address, address, uint256, bytes) returns (bytes4)",
+  "function owner() view returns (address)",
+  "function releaseERC20Token(address to, uint256 amount, address token)",
+  "function releaseERC721Token(address to, uint256 id, address token)",
+  "function releaseNativeToken(address to, uint256 amount)",
+];
+
+const privateKey =
+  "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80";
+
+let contract_address, mini_address, token_address, treasury_address;
+let provider, signer, walletAddress;
+let contract, mini_contract, token_contract, treasury_contract;
+contract_address = "0x5FbDB2315678afecb367f032d93F642f64180aa3";
+
+const getForwardContractAddress = () => {
+  const button = document.getElementById("btn");
+  if (button) {
+    button.click();
+
+    setTimeout(() => {
+      contract_address = document.getElementById(
+        "form-output-myAddr-0",
+      ).innerHTML;
+      console.log("contract address: ", contract_address);
+    }, 500);
+  }
+};
+
+const initApp = async () => {
+  provider = new ethers.getDefaultProvider("http://127.0.0.1:8545/");
+  if (!provider.getNetwork()) {
+    sleep(2000);
+    getForwardContractAddress();
+    if (window.parent.ethereum == null) {
+      console.log("MetaMask not installed; using read-only defaults");
+    } else {
+      provider = new ethers.BrowserProvider(window.parent.ethereum);
+    }
+  }
+  signer = await provider.getSigner();
+  contract = new ethers.Contract(contract_address, super_abi, signer);
+
+  mini_address = await contract.governor();
+  mini_contract = new ethers.Contract(mini_address, mini_abi, signer);
+
+  token_address = await contract.token();
+  token_contract = new ethers.Contract(token_address, token_abi, signer);
+
+  treasury_address = await contract.treasury();
+  treasury_contract = new ethers.Contract(
+    treasury_address,
+    treasury_abi,
+    signer,
+  );
+
+  walletAddress = await signer.getAddress();
+};
+
+initApp().then(() => {
+  checkConnection();
+});
+
+async function checkConnection() {
+  try {
+    // Проверка провайдера
+    await provider.getNetwork();
+
+    // Проверка signer (кошелька)
+    const address = await signer.getAddress();
+    if (!address) throw new Error("Wallet address not available");
+
+    // Проверка контрактов
+    const miniAddress = await contract.governor();
+    const miniContract = new ethers.Contract(miniAddress, mini_abi, signer);
+    await miniContract.address;
+
+    const tokenAddress = await contract.token();
+    const tokenContract = new ethers.Contract(tokenAddress, token_abi, signer);
+    await tokenContract.address;
+
+    const treasuryAddress = await contract.treasury();
+    const treasuryContract = new ethers.Contract(
+      treasuryAddress,
+      treasury_abi,
+      signer,
+    );
+    await treasuryContract.address;
+
+    console.log("All connections are available");
+  } catch (error) {
+    console.error("Connection check failed:", error.message);
+    if (
+      confirm(
+        "A contract or wallet is not available. Do you want to reinitialize the application?",
+      )
+    ) {
+      await initApp();
+    }
+  }
+}
+
+async function fetchPosts() {
+  const posts = [];
+  let data;
+
+  try {
+    // Check if mini_contract is initialized
+    if (!mini_contract) throw new Error("Mini contract not initialized");
+
+    data = await mini_contract.queryFilter("ProposalCreated");
+  } catch (error) {
+    console.error("Error fetching posts:", error);
+    // Retry after a delay if initialization error
+    await new Promise((resolve) => setTimeout(resolve, 3000));
+    return fetchPosts();
+  }
+
+  for (const [index, item] of data.entries()) {
+    let formattedDate;
+    const block = await provider.getBlock(item.args.voteStart);
+    if (block) {
+      const date = new Date(block.timestamp * 1000);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      formattedDate = `${day < 10 ? "0" : ""}${day}.${
+        month < 10 ? "0" : ""
+      }${month}.${year}`;
+    }
+
+    const status_id = await mini_contract.state(item.args.proposalId);
+    const votes = await mini_contract.proposalVotes(item.args.proposalId);
+    const decimals = await token_contract.decimals();
+    const cp = Number(votes[1] / 10n ** decimals);
+    const cn = Number(votes[2] / 10n ** decimals);
+    const cd = Number(votes[0] / 10n ** decimals);
+    const summ = cp + cn + cd;
+    const countUp = formatNumber(cp);
+    const countNeutral = formatNumber(cn);
+    const countDown = formatNumber(cd);
+
+    const token_name = await token_contract.name();
+
+    const title = await mini_contract.titles(item.args.proposalId);
+    const post = {
+      index: index,
+      title: title,
+      proposer: item.args.proposer,
+      vote_start: block ? formattedDate : item.args.voteStart,
+      time: getVotingEndText(item.args.voteEnd),
+      description: item.args.description,
+      status: getStatusNameById(status_id),
+      status_id: status_id,
+      votes: {
+        down: {
+          text: `${countDown.toString()} ${token_name}`,
+          percent: summ === 0 ? 0 : (cd / summ) * 100,
+        },
+        up: {
+          text: `${countUp.toString()} ${token_name}`,
+          percent: summ === 0 ? 0 : (cp / summ) * 100,
+        },
+        neutral: {
+          text: `${countNeutral.toString()} ${token_name}`,
+          percent: summ === 0 ? 0 : (cn / summ) * 100,
+        },
+      },
+      extra: {
+        targets: Object.values(item.args.targets),
+        values:
+          Object.values(item.args.values).length < 1
+            ? Array(Object.values(item.args.targets).length).fill(0)
+            : Object.values(item.args.values),
+        calldatas: Object.values(item.args.calldatas),
+        proposalId: item.args.proposalId,
+      },
+    };
+
+    posts.push(post);
+  }
+
+  return posts.reverse();
+}

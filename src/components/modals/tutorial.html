@@ -1,0 +1,36 @@
+<dialog class="modal" id="tutorial_modal">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Hello!</h3>
+    <p class="py-4">
+      We noticed that you are new to this portal, we suggest you go through a
+      quick guide on the platform, to do this, click the
+      <code>Let`s go</code> button, otherwise you can click the
+      <code>Decline</code> button and skip this step
+    </p>
+    <div class="modal-action">
+      <button class="btn btn-primary" onclick="startTutorial()">
+        Let`s go
+      </button>
+      <button class="btn" onclick="closeTutorial()">Decline</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const is_tutorial_seen = localStorage.getItem("is_tutorial_seen");
+        if (!is_tutorial_seen) {
+            tutorial_modal.showModal();
+        }
+    });
+
+    function startTutorial() {
+        tutorial_modal.close();
+        customStartTour();
+    }
+
+    function closeTutorial() {
+        tutorial_modal.close();
+        localStorage.setItem("is_tutorial_seen", 1);
+    }
+</script>

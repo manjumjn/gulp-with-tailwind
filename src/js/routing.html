@@ -1,0 +1,51 @@
+// PAGE ROUTE
+const links = document.querySelectorAll("[data-navigo]");
+const pages = document.querySelectorAll(".page");
+document.getElementById("voting-proposals").classList.add("active");
+links.forEach((link) => {
+  link.addEventListener("click", () => {
+    console.log("route link clicked");
+    links.forEach((_link) => {
+      _link.classList.remove("active");
+    });
+
+    const page_id = link.getAttribute("data-navigo");
+    const active_links = document.querySelectorAll(
+      `[data-navigo="${page_id}"]`,
+    );
+    active_links.forEach((_link) => {
+      _link.classList.add("active");
+    });
+
+    document.querySelector(".page.active").classList.remove("active");
+    document.querySelector(`#${page_id}`).classList.add("active");
+  });
+});
+
+// TAB ROUTE
+const tabContainers = document.querySelectorAll("[data-tabs-container]");
+tabContainers.forEach((tabContainer) => {
+  const tabs = tabContainer.querySelectorAll("[data-tab-target]");
+
+  const tabContents = tabContainer.querySelectorAll("[data-tab-content]");
+
+  tabs.forEach((tab) => {
+    tab.addEventListener("click", (event) => {
+      tabs.forEach((el) => {
+        el.classList.remove("tab-active");
+      });
+      tab.classList.add("tab-active");
+
+      const tabId = tab.getAttribute("data-tab-target");
+      tabContents.forEach((tabContent) => {
+        if (tabContent.getAttribute("data-tab-content") === tabId) {
+          tabContent.classList.add("flex");
+          tabContent.classList.remove("hidden");
+        } else {
+          tabContent.classList.remove("flex");
+          tabContent.classList.add("hidden");
+        }
+      });
+    });
+  });
+});

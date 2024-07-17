@@ -1,0 +1,53 @@
+<form
+    action="#"
+    class="card bg-base-100 mt-4 flex w-96 flex-col gap-2 p-6 shadow"
+    data-tab-content="donate-native"
+    id="donate-native-form"
+>
+  <div>
+    <label class="label label-text" data-tip="hello" for="amount">Amount</label>
+    <input
+        class="input input-bordered w-full"
+        id="amount"
+        name="amount"
+        placeholder="Type here"
+        type="number"
+    />
+  </div>
+  <button class="btn btn-primary mt-2">Submit</button>
+
+  <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+          const validation = new window.JustValidate("#donate-native-form");
+
+          validation
+              .addField("#amount", [
+                  {
+                      rule: "required",
+                      errorMessage: "Amount is required",
+                  },
+                  {
+                      rule: "number",
+                      errorMessage: "Amount must be a number",
+                  },
+                  {
+                      rule: "minNumber",
+                      value: 0.01,
+                      errorMessage: "Amount must be greater than 0",
+                  },
+              ])
+              .onSuccess((event) => {
+                  event.preventDefault();
+                  addOverlay("donate-native-form");
+                  const formData = new FormData(event.target);
+                  const data = Object.fromEntries(formData);
+                  setTimeout(() => {
+                      removeOverlay("donate-native-form");
+                  }, 1000);
+
+                  console.log("Form data:", data);
+                  showToast("Native donate successfuly!");
+              });
+      });
+  </script>
+</form>

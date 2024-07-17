@@ -1,0 +1,600 @@
+const driver = window.driver.js.driver;
+let driverObj;
+
+const example_post = `
+  <div id="example-post" class="border-base-500 w-full rounded-xl border p-6">
+    <div class="mb-6 flex items-center justify-between">
+      <div id="user-example" class="flex items-center gap-2">
+        <img
+          src="https://cdn.stamp.fyi/avatar/eth:0x9CE99C109807a77384782142E9D3788d3b6E1F15?s=40&ts=1714866711"
+          alt="logo"
+          class="h-6 w-6 rounded-full"
+        />
+        <div
+          x-data="{
+                      copyText: '0x9CE99C109807a77384782142E9D3788d3b6E1F15',
+                      copyNotification: false,
+                      copyToClipboard() {
+                          navigator.clipboard.writeText(this.copyText);
+                          this.copyNotification = true;
+                          let that = this;
+                          setTimeout(function(){
+                              that.copyNotification = false;
+                          }, 3000);
+                      }
+                  }"
+          class="relative z-20 flex items-center"
+        >
+          <button
+            @click="copyToClipboard();"
+            class="group flex h-8 w-auto cursor-pointer items-center justify-center rounded-md border border-neutral-200/60 bg-white px-3 py-1 text-xs text-neutral-500 hover:bg-neutral-100 hover:text-neutral-600 focus:bg-white focus:outline-none active:bg-white"
+          >
+            <span x-show="!copyNotification">0x9CE99...E1F15</span>
+            <svg
+              x-show="!copyNotification"
+              class="ml-1.5 h-4 w-4 stroke-current"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="h-6 w-6"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z"
+              />
+            </svg>
+            <span
+              x-show="copyNotification"
+              class="tracking-tight text-green-500"
+              x-cloak
+              >Copied to Clipboard</span
+            >
+            <svg
+              x-show="copyNotification"
+              class="ml-1.5 h-4 w-4 stroke-current text-green-500"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              x-cloak
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M11.35 3.836c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m8.9-4.414c.376.023.75.05 1.124.08 1.131.094 1.976 1.057 1.976 2.192V16.5A2.25 2.25 0 0118 18.75h-2.25m-7.5-10.5H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V18.75m-7.5-10.5h6.375c.621 0 1.125.504 1.125 1.125v9.375m-8.25-3l1.5 1.5 3-3.75"
+              />
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <span
+        id="status-example"
+        class="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800"
+        >Badge</span
+      >
+    </div>
+
+    <a id="title-example" href="#" class="text-xl font-bold"
+      >[5.8][Social] ENS Steward Vesting Proposal</a
+    >
+    <p id="description-example" class="mt-2 cursor-pointer text-lg font-medium" data-show-full>
+      Abstract Following discussion in the Metagov funding request thread and
+      feedback on the Temp Check Proposal, we have put together this
+      amendment...
+    </p>
+
+    <div id="voting-example" class="mt-4 flex flex-col gap-2">
+      <div role="button" onclick="alert('vote')" class="relative h-10 w-full">
+        <div
+          class="bg-base-300 absolute left-0 top-0 z-0 h-full w-1/3 rounded"
+        ></div>
+        <div
+          style="width: 60%"
+          class="relative z-10 flex h-full w-full items-center justify-between px-4"
+        >
+          <p class="font-medium text-gray-800 dark:text-white">
+            For
+            <span class="ml-2 text-sm font-normal text-gray-600"
+              >798K Matic</span
+            >
+          </p>
+          <p>58.7%</p>
+        </div>
+      </div>
+      <div role="button" onclick="alert('vote')" class="relative h-10 w-full">
+        <div
+          class="bg-base-300 absolute left-0 top-0 z-0 h-full w-2/3 rounded"
+        ></div>
+        <div
+          class="relative z-10 flex h-full w-full items-center justify-between px-4"
+        >
+          <p class="font-medium text-gray-800 dark:text-white">
+            Against
+            <span class="ml-2 text-sm font-normal text-gray-600"
+              >478K Matic</span
+            >
+          </p>
+          <p>42.1%</p>
+        </div>
+      </div>
+      <div role="button" onclick="alert('vote')" class="relative h-10 w-full">
+        <div
+          class="bg-base-300 absolute left-0 top-0 z-0 h-full w-full rounded"
+        ></div>
+        <div
+          class="relative z-10 flex h-full w-full items-center justify-between px-4"
+        >
+          <p class="font-medium text-gray-800 dark:text-white">
+            Abstain
+            <span class="ml-2 text-sm font-normal text-gray-600"
+              >1M Matic</span
+            >
+          </p>
+          <p>100%</p>
+        </div>
+      </div>
+    </div>
+
+    <p id="expired-example" class="mt-4 text-gray-500">Ended 3 hours ago</p>
+  </div>
+`;
+
+const votes_feed = document.getElementById("votes-feed");
+const skeletonElement = votes_feed.querySelector("#skeleton-post");
+
+// Define mobile and desktop steps
+const mobileSteps = [
+  {
+    popover: {
+      title: "Hello, it`s a tour of minidao!",
+      description:
+        "In this guide, we will show you how to use this application!",
+    },
+  },
+  {
+    element: "#navbar",
+    popover: {
+      title: "Navigation Menu!",
+      description:
+        "In this menu, you can switch between the application's tabs in real-time, for example, to create a new post or donate!",
+    },
+  },
+  {
+    element: "#bb",
+    popover: {
+      title: "Menu!",
+      description: "Here you can switch between pages!",
+      onNextClick: () => {
+        router.navigate("/voting-proposals");
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#filter-button",
+    popover: {
+      title: "Filter proposals button!",
+      description: "Here you can filter proposals by statuses!",
+      onNextClick: () => {
+        skeletonElement.classList.add("hidden");
+        votes_feed.innerHTML += example_post;
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#user-example",
+    popover: {
+      title: "Proposer info!",
+      description: "Here you can view the proposer's information!",
+    },
+  },
+  {
+    element: "#status-example",
+    popover: {
+      title: "Proposal status!",
+      description: "Here you can view the status of the proposal!",
+    },
+  },
+  {
+    element: "#title-example",
+    popover: {
+      title: "Proposal title!",
+      description: "Here you can view the title of the proposal!",
+    },
+  },
+  {
+    element: "#description-example",
+    popover: {
+      title: "Proposal description!",
+      description:
+        "Here you can see a short description of the vote, when you click on it you can open a full window with a description!",
+    },
+  },
+  {
+    element: "#voting-example",
+    popover: {
+      title: "Voting section!",
+      description:
+        "In this block you can cast your vote for one of the presented options, to do this you just need to click on it!",
+    },
+  },
+  {
+    element: "#expired-example",
+    popover: {
+      title: "Expired date!",
+      description: "Here you can see the expiration date of the proposal!",
+      onNextClick: () => {
+        skeletonElement.classList.remove("hidden");
+        document.querySelector("#example-post").remove();
+        document.querySelector("#desktop-voting-proposal-link a").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#template-tabs",
+    popover: {
+      title: "Template tabs!",
+      description: "Here you can switch between the tabs with templates!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='issue-grant']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#issue-grant-form",
+    popover: {
+      title: "Issue grant form!",
+      description: "Here you can fill out the form to issue a grant!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='additional-mint']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#additional-mint-form",
+    popover: {
+      title: "Additional mint form!",
+      description: "Here you can fill out the form to additional mint!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='erc20-grant']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#erc20-grant-form",
+    popover: {
+      title: "ERC20 grant form!",
+      description: "Here you can fill out the form to erc20 grant!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='nft721-grant']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#nft721-grant-form",
+    popover: {
+      title: "NFT721 grant form!",
+      description: "Here you can fill out the form to nft721 grant!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='simple-voting']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#simple-voting-form",
+    popover: {
+      title: "Simple voting form!",
+      description: "Here you can fill out the form to simple voting!",
+      onNextClick: () => {
+        document.querySelector("#desktop-donate-link a").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#donate-tabs",
+    popover: {
+      title: "Donate tabs!",
+      description: "Here you can switch between the tabs with donate forms!",
+    },
+  },
+  {
+    element: "#donate-native-form",
+    popover: {
+      title: "Donate native form!",
+      description: "Here you can fill out the form to donate native tokens!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='donate-erc20']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#donate-erc20-form",
+    popover: {
+      title: "Donate ERC20 form!",
+      description: "Here you can fill out the form to donate ERC20 tokens!",
+      onNextClick: () => {
+        document.querySelector("#desktop-voting-proposal-link a").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    popover: {
+      title: "That's all!",
+      description: "We wish you a pleasant use!",
+      onNextClick: () => {
+        window.removeEventListener("resize", handleResize);
+        localStorage.setItem("is_tutorial_seen", 1);
+        driverObj.destroy();
+      },
+    },
+  },
+];
+
+const desktopSteps = [
+  {
+    popover: {
+      title: "Hello, it`s a tour of minidao!",
+      description:
+        "In this guide, we will show you how to use this application!",
+    },
+  },
+  {
+    element: "#navbar",
+    popover: {
+      title: "Navigation Menu!",
+      description:
+        "In this menu, you can switch between the application's tabs in real-time, for example, to create a new post or donate!",
+    },
+  },
+  {
+    element: "#desktop-voting-proposal-link",
+    popover: {
+      title: "Voting proposals link",
+      description: "Here you can view and vote for the proposals!",
+      onNextClick: () => {
+        document.querySelector("#desktop-voting-proposal-link").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#filter-button",
+    popover: {
+      title: "Filter proposals button!",
+      description: "Here you can filter proposals by statuses!",
+      onNextClick: () => {
+        skeletonElement.classList.add("hidden");
+        votes_feed.innerHTML += example_post;
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#user-example",
+    popover: {
+      title: "Proposer info!",
+      description: "Here you can view the proposer's information!",
+    },
+  },
+  {
+    element: "#status-example",
+    popover: {
+      title: "Proposal status!",
+      description: "Here you can view the status of the proposal!",
+    },
+  },
+  {
+    element: "#title-example",
+    popover: {
+      title: "Proposal title!",
+      description: "Here you can view the title of the proposal!",
+    },
+  },
+  {
+    element: "#description-example",
+    popover: {
+      title: "Proposal description!",
+      description:
+        "Here you can see a short description of the vote, when you click on it you can open a full window with a description!",
+    },
+  },
+  {
+    element: "#voting-example",
+    popover: {
+      title: "Voting section!",
+      description:
+        "In this block you can cast your vote for one of the presented options, to do this you just need to click on it!",
+    },
+  },
+  {
+    element: "#expired-example",
+    popover: {
+      title: "Expired date!",
+      description: "Here you can see the expiration date of the proposal!",
+    },
+    onNextClick: () => {
+      skeletonElement.classList.remove("hidden");
+      document.querySelector("#example-post").remove();
+      driverObj.moveNext();
+    },
+  },
+  {
+    element: "#desktop-template-link",
+    popover: {
+      title: "Ready to use templates!",
+      description:
+        "Here you can view and use ready-made templates for your posts!",
+      onNextClick: () => {
+        document.querySelector("#desktop-template-link").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#template-tabs",
+    popover: {
+      title: "Template tabs!",
+      description: "Here you can switch between the tabs with templates!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='issue-grant']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#issue-grant-form",
+    popover: {
+      title: "Issue grant form!",
+      description: "Here you can fill out the form to issue a grant!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='additional-mint']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#additional-mint-form",
+    popover: {
+      title: "Additional mint form!",
+      description: "Here you can fill out the form to additional mint!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='erc20-grant']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#erc20-grant-form",
+    popover: {
+      title: "ERC20 grant form!",
+      description: "Here you can fill out the form to erc20 grant!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='nft721-grant']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#nft721-grant-form",
+    popover: {
+      title: "NFT721 grant form!",
+      description: "Here you can fill out the form to nft721 grant!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='simple-voting']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#simple-voting-form",
+    popover: {
+      title: "Simple voting form!",
+      description: "Here you can fill out the form to simple voting!",
+    },
+  },
+  {
+    element: "#desktop-donate-link",
+    popover: {
+      title: "Donate forms!",
+      description: "Here you can donate to the project and support users!",
+      onNextClick: () => {
+        document.querySelector("#desktop-donate-link").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#donate-tabs",
+    popover: {
+      title: "Donate tabs!",
+      description: "Here you can switch between the tabs with donate forms!",
+    },
+  },
+  {
+    element: "#donate-native-form",
+    popover: {
+      title: "Donate native form!",
+      description: "Here you can fill out the form to donate native tokens!",
+      onNextClick: () => {
+        document.querySelector("[data-tab-target='donate-erc20']").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    element: "#donate-erc20-form",
+    popover: {
+      title: "Donate ERC20 form!",
+      description: "Here you can fill out the form to donate ERC20 tokens!",
+      onNextClick: () => {
+        document.querySelector("#desktop-voting-proposal-link").click();
+        driverObj.moveNext();
+      },
+    },
+  },
+  {
+    popover: {
+      title: "That's all!",
+      description: "We wish you a pleasant use!",
+      onNextClick: () => {
+        window.removeEventListener("resize", handleResize);
+        localStorage.setItem("is_tutorial_seen", 1);
+        driverObj.destroy();
+      },
+    },
+  },
+];
+
+function handleResize() {
+  const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+  if (driverObj) {
+    const currentSteps = driverObj.steps;
+    const newSteps = isMobile ? mobileSteps : desktopSteps;
+
+    // Compare the current and new steps to see if they are different
+    if (JSON.stringify(currentSteps) !== JSON.stringify(newSteps)) {
+      driverObj.destroy();
+      startTour(); // Restart the tour with new steps
+    }
+  } else {
+    console.log("Driver object not found");
+  }
+}
+
+// Function to start the appropriate tour based on screen size
+function startTour() {
+  const isMobile = window.matchMedia("(max-width: 1023px)").matches;
+  const steps = isMobile ? mobileSteps : desktopSteps;
+
+  driverObj = driver({
+    showProgress: true,
+    steps: steps,
+    allowClose: false,
+    showButtons: ["next"],
+  });
+
+  driverObj.drive();
+}
+
+window.customStartTour = function () {
+  const is_tutorial_seen = localStorage.getItem("is_tutorial_seen");
+  if (!is_tutorial_seen) {
+    startTour();
+    window.addEventListener("resize", handleResize);
+  }
+};

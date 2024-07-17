@@ -1,0 +1,202 @@
+<form
+    action="#"
+    class="card bg-base-100 mt-4 hidden w-96 flex-col gap-2 p-6 shadow"
+    data-tab-content="erc20-grant"
+    id="erc20-grant-form"
+>
+  <button
+      class="btn mb-2"
+      onclick="pay_erc20_grant_docs.showModal()"
+      type="button"
+  >
+    Docs for pay erc20 grant
+  </button>
+  <div>
+    <label class="label label-text" for="erc20-grant-title">Title</label>
+    <input
+        class="input input-bordered w-full"
+        id="erc20-grant-title"
+        name="title"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="erc20-grant-wallet"
+    >Receiver wallet address</label
+    >
+    <input
+        class="input input-bordered w-full"
+        id="erc20-grant-wallet"
+        name="wallet"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="erc20-grant-amount">Amount</label>
+    <input
+        class="input input-bordered w-full"
+        id="erc20-grant-amount"
+        name="amount"
+        placeholder="Type here"
+        type="number"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="erc20-grant-token_address"
+    >Token address</label
+    >
+    <input
+        class="input input-bordered w-full"
+        id="erc20-grant-token_address"
+        name="token_address"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" for="erc20-grant-description"
+    >Description</label
+    >
+    <textarea
+        class="textarea textarea-bordered w-full"
+        id="erc20-grant-description"
+        name="description"
+        placeholder="Type your description"
+    ></textarea>
+  </div>
+  <button class="btn btn-primary mt-2">Submit Grant</button>
+
+  <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+          const validation = new window.JustValidate("#erc20-grant-form");
+
+          validation
+              .addField("#erc20-grant-title", [
+                  {
+                      rule: "required",
+                      errorMessage: "Title is required",
+                  },
+              ])
+              .addField("#erc20-grant-wallet", [
+                  {
+                      rule: "required",
+                      errorMessage: "Wallet address is required",
+                  },
+                  {
+                      rule: "minLength",
+                      value: 42,
+                      errorMessage: "Wallet address must be 42 characters long",
+                  },
+                  {
+                      rule: "maxLength",
+                      value: 42,
+                      errorMessage: "Wallet address must be 42 characters long",
+                  },
+              ])
+              .addField("#erc20-grant-amount", [
+                  {
+                      rule: "required",
+                      errorMessage: "Amount is required",
+                  },
+                  {
+                      rule: "number",
+                      errorMessage: "Amount must be a number",
+                  },
+                  {
+                      rule: "minNumber",
+                      value: 0.01,
+                      errorMessage: "Amount must be greater than 0",
+                  },
+              ])
+              .addField("#erc20-grant-description", [
+                  {
+                      rule: "required",
+                      errorMessage: "Description is required",
+                  },
+              ])
+              .addField("#erc20-grant-token_address", [
+                  {
+                      rule: "required",
+                      errorMessage: "Token address is required",
+                  },
+                  {
+                      rule: "minLength",
+                      value: 42,
+                      errorMessage: "Token address must be 42 characters long",
+                  },
+                  {
+                      rule: "maxLength",
+                      value: 42,
+                      errorMessage: "Token address must be 42 characters long",
+                  },
+              ])
+              .onSuccess((event) => {
+                  event.preventDefault();
+                  addOverlay("erc20-grant-form");
+                  const formData = new FormData(event.target);
+                  const data = Object.fromEntries(formData);
+                  setTimeout(() => {
+                      removeOverlay("erc20-grant-form");
+                  }, 1000);
+
+                  console.log("Form data:", data);
+                  showToast("Paying erc20 grant successfuly!");
+              });
+      });
+  </script>
+</form>
+
+<dialog class="modal" id="pay_erc20_grant_docs">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Form Explanation</h3>
+    <div class="space-y-4 py-4">
+      <p>
+        This form is designed to collect all necessary information for issuing a
+        new ERC20 grant within the MiniDAO platform. Each field in the form
+        collects specific details required to process and approve the grant
+        request:
+      </p>
+      <ul class="space-y-2">
+        <li>
+          <strong>Title:</strong> Provide a brief and descriptive title for the
+          grant. This helps others understand the purpose of the grant.
+        </li>
+
+        <li>
+          <strong>Receiver Wallet Address:</strong> Enter the cryptocurrency
+          wallet address where the grant funds will be sent. Ensure that the
+          address is capable of receiving ERC20 tokens.
+        </li>
+
+        <li>
+          <strong>Amount:</strong> Specify the number of ERC20 tokens to be
+          granted. Enter the amount as a numeric value.
+        </li>
+
+        <li>
+          <strong>Token Address:</strong> Provide the smart contract address of
+          the ERC20 token being granted. This ensures the correct type of token
+          is transferred.
+        </li>
+
+        <li>
+          <strong>Description:</strong> Give a detailed description outlining
+          the goals and requirements of the grant. Include any relevant
+          information that will help in evaluating the grant request.
+        </li>
+      </ul>
+      <p>
+        Once all fields are filled out, the user can submit the form by clicking
+        the "Submit Grant" button. The provided information will then be
+        processed for grant issuance.
+      </p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>

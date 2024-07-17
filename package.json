@@ -3,7 +3,9 @@
   "version": "2.2.0",
   "description": "TailwindCSS StarterKit with Gulp 4",
   "main": "gulpfile.js",
-  "dependencies": {},
+  "dependencies": {
+    "gulp-ignore": "^3.0.0"
+  },
   "devDependencies": {
     "@tailwindcss/container-queries": "^0.1.0",
     "@tailwindcss/forms": "^0.5.3",
@@ -11,6 +13,7 @@
     "autoprefixer": "^10.4.13",
     "browser-sync": "^2.27.10",
     "cssnano": "^5.1.15",
+    "daisyui": "^4.11.1",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^4.3.0",
@@ -24,7 +27,7 @@
     "imagemin-pngquant": "^9.0.2",
     "log-symbols": "^4.1.0",
     "postcss": "^8.4.21",
-    "prettier": "^2.8.4",
+    "prettier": "^3.3.2",
     "prettier-plugin-tailwindcss": "^0.2.3",
     "sass": "^1.58.1",
     "tailwindcss": "^3.3.0"
