@@ -1,0 +1,7 @@
+[
+  "function governor() view returns (address)",
+  "function myAddr() view returns (address)",
+  "function timeLock() view returns (address)",
+  "function token() view returns (address)",
+  "function treasury() view returns (address)"
+]

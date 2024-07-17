@@ -1,0 +1,30 @@
+<section class="page" id="templates">
+  <div class="mt-8 flex flex-col items-center" data-tabs-container>
+    <div
+        class="tabs tabs-boxed flex flex-col items-center md:grid"
+        data-tabs-nav
+        id="template-tabs"
+        role="tablist"
+    >
+      <a class="tab tab-active" data-tab-target="issue-grant" role="tab"
+      >Issue grant</a
+      >
+      <a class="tab" data-tab-target="additional-mint" role="tab"
+      >Additional mint</a
+      >
+      <a class="tab" data-tab-target="erc20-grant" role="tab"
+      >Pay erc20 grant</a
+      >
+      <a class="tab" data-tab-target="nft721-grant" role="tab"
+      >Pat NFT721 grant</a
+      >
+      <a class="tab" data-tab-target="simple-voting" role="tab"
+      >Simple voting</a
+      >
+    </div>
+
+    @@include('forms/issue-grant.html') @@include('forms/additional-mint.html')
+    @@include('forms/erc20-grant.html') @@include('forms/nft721-grant.html')
+    @@include('forms/simple-voting.html')
+  </div>
+</section>

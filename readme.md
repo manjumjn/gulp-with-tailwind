@@ -1,6 +1,9 @@
 # Gulp with TailwindCSS Starter Kit
 
-Gulp with TailwindCSS v3 Starter Kit ( ~~Updated with [TailwindCSS JIT](https://github.com/tailwindlabs/tailwindcss-jit)~~ - **latest tailwind has JIT is built-in** ) - A repo that makes your development easier with predefined gulp tasks that help you to use [tailwindcss](https://github.com/tailwindcss/tailwindcss) with simple commands.
+Gulp with TailwindCSS v3 Starter Kit ( ~~Updated
+with [TailwindCSS JIT](https://github.com/tailwindlabs/tailwindcss-jit)~~ - **latest tailwind has JIT is built-in** ) -
+A repo that makes your development easier with predefined gulp tasks that help you to
+use [tailwindcss](https://github.com/tailwindcss/tailwindcss) with simple commands.
 
 ## Features
 
@@ -11,14 +14,16 @@ Gulp with TailwindCSS v3 Starter Kit ( ~~Updated with [TailwindCSS JIT](https://
 - Minification of images on production build using `imagemin`
 - Includes following tailwindcss plugins (can be disabled/enabled with `config.js`)
 
-  - [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
-  - ~~[@tailwindcss/line-clamp](https://github.com/tailwindlabs/tailwindcss-line-clamp)~~ - Utility is included by default in Tailwind v3.3 release
-  - [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
-  - [@tailwindcss/container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries)
+    - [@tailwindcss/forms](https://github.com/tailwindlabs/tailwindcss-forms)
+    - ~~[@tailwindcss/line-clamp](https://github.com/tailwindlabs/tailwindcss-line-clamp)~~ - Utility is included by
+      default in Tailwind v3.3 release
+    - [@tailwindcss/typography](https://tailwindcss.com/docs/typography-plugin)
+    - [@tailwindcss/container-queries](https://github.com/tailwindlabs/tailwindcss-container-queries)
 
 ## Quick Start
 
-You can get started by clicking on `Use this template` for creating new repo using this template or simply by cloning it.
+You can get started by clicking on `Use this template` for creating new repo using this template or simply by cloning
+it.
 
 Install dev dependencies
 
@@ -38,11 +43,13 @@ Generate build files for production server
 yarn prod // or npm run prod
 ```
 
-All dev files are present in `src` folder. The build version can be found in `build` folder after running `yarn build` command.
+All dev files are present in `src` folder. The build version can be found in `build` folder after running `yarn build`
+command.
 
 ## Configuration
 
-All configurations are found in `config.js` file in the root directory. You can configure browser default port, enable/disable plugins by simply updating boolean values (Default is set to `true`) and many more.
+All configurations are found in `config.js` file in the root directory. You can configure browser default port,
+enable/disable plugins by simply updating boolean values (Default is set to `true`) and many more.
 
 ```js
 const config = {
@@ -71,4 +78,5 @@ const plugins = {
 
 ## License
 
-This project is open source and available under the [MIT License](https://github.com/lazymozek/gulp-with-tailwindcss/blob/main/LICENSE).
+This project is open source and available under
+the [MIT License](https://github.com/lazymozek/gulp-with-tailwindcss/blob/main/LICENSE).

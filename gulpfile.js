@@ -12,11 +12,12 @@
   3. npm run prod //To generate minifed files for live server
 */
 
-const { src, dest, watch, series, parallel } = require("gulp");
+const {src, dest, watch, series, parallel} = require("gulp");
 const clean = require("gulp-clean"); //For Cleaning build/dist for fresh export
 const options = require("./config"); //paths and other options from config.js
 const browserSync = require("browser-sync").create();
 
+const ignore = require('gulp-ignore');
 const sass = require("gulp-sass")(require("sass")); //For Compiling SASS files
 const postcss = require("gulp-postcss"); //For Compiling tailwind utilities with tailwind config
 const concat = require("gulp-concat"); //For Concatinating js,css files
@@ -31,6 +32,7 @@ const includePartials = require("gulp-file-include"); //For supporting partials 
 //Load Previews on Browser on dev
 function livePreview(done) {
   browserSync.init({
+    notify: false,
     server: {
       baseDir: options.paths.dist.base,
     },
@@ -48,7 +50,7 @@ function previewReload(done) {
 
 //Development Tasks
 function devHTML() {
-  return src(`${options.paths.src.base}/**/*.html`)
+  return src([`${options.paths.src.base}/**/*.html`, `!${options.paths.src.base}/components/**`])
     .pipe(includePartials())
     .pipe(dest(options.paths.dist.base));
 }
@@ -59,7 +61,7 @@ function devStyles() {
   return src(`${options.paths.src.css}/**/*.scss`)
     .pipe(sass().on("error", sass.logError))
     .pipe(postcss([tailwindcss(options.config.tailwindjs), autoprefixer()]))
-    .pipe(concat({ path: "style.css" }))
+    .pipe(concat({path: "style.css"}))
     .pipe(dest(options.paths.dist.css));
 }
 
@@ -69,7 +71,7 @@ function devScripts() {
     `${options.paths.src.js}/**/*.js`,
     `!${options.paths.src.js}/**/external/*`,
   ])
-    .pipe(concat({ path: "scripts.js" }))
+    .pipe(concat({path: "scripts.js"}))
     .pipe(dest(options.paths.dist.js));
 }
 
@@ -121,14 +123,14 @@ function devClean() {
     "\n\t" + logSymbols.info,
     "Cleaning dist folder for fresh start.\n"
   );
-  return src(options.paths.dist.base, { read: false, allowEmpty: true }).pipe(
+  return src(options.paths.dist.base, {read: false, allowEmpty: true}).pipe(
     clean()
   );
 }
 
 //Production Tasks (Optimized Build for Live/Production Sites)
 function prodHTML() {
-  return src(`${options.paths.src.base}/**/*.{html,php}`)
+  return src([`${options.paths.src.base}/**/*.html`, `!${options.paths.src.base}/components/**`])
     .pipe(includePartials())
     .pipe(dest(options.paths.build.base));
 }
@@ -169,7 +171,7 @@ function prodScripts() {
     `${options.paths.src.js}/libs/**/*.js`,
     `${options.paths.src.js}/**/*.js`,
   ])
-    .pipe(concat({ path: "scripts.js" }))
+    .pipe(concat({path: "scripts.js"}))
     .pipe(uglify())
     .pipe(dest(options.paths.build.js));
 }
@@ -182,8 +184,8 @@ function prodImages() {
     ? options.config.imagemin.jpeg
     : 70;
   const plugins = [
-    pngquant({ quality: pngQuality }),
-    mozjpeg({ quality: jpgQuality }),
+    pngquant({quality: pngQuality}),
+    mozjpeg({quality: jpgQuality}),
   ];
 
   return src(options.paths.src.img + "/**/*")
@@ -208,7 +210,7 @@ function prodClean() {
     "\n\t" + logSymbols.info,
     "Cleaning build folder for fresh start.\n"
   );
-  return src(options.paths.build.base, { read: false, allowEmpty: true }).pipe(
+  return src(options.paths.build.base, {read: false, allowEmpty: true}).pipe(
     clean()
   );
 }

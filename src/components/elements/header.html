@@ -1,0 +1,62 @@
+<div
+    class="navbar bg-base-100 border-base-200 mb-4 rounded-xl border shadow"
+    id="navbar"
+>
+  <div class="navbar-start">
+    <div class="dropdown">
+      <div class="btn btn-ghost lg:hidden" id="bb" role="button" tabindex="0">
+        <svg
+            class="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+              d="M4 6h16M4 12h8m-8 6h16"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+          />
+        </svg>
+      </div>
+      <ul
+          class="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+          tabindex="0"
+      >
+        <li class="custom-link">
+          <p
+              class="active"
+              data-navigo="voting-proposals"
+              id="mobile-voting-proposal-link"
+          >
+            Voting proposals
+          </p>
+        </li>
+        <li class="custom-link">
+          <p data-navigo="templates" id="mobile-templates-link">Templates</p>
+        </li>
+        <li class="custom-link">
+          <p data-navigo="donate" id="mobile-donate-link">Donate</p>
+        </li>
+      </ul>
+    </div>
+    <p class="btn btn-ghost custom-link text-xl" data-navigo="voting-proposals"></p>
+    MiniDAO
+    </p>
+  </div>
+  <div class="navbar-end flex">
+    @@include('theme-controller.html')
+    <ul class="menu menu-horizontal hidden px-1 lg:flex">
+      <li class="custom-link" id="desktop-voting-proposal-link">
+        <p class="active" data-navigo="voting-proposals">Voting proposals</p>
+      </li>
+      <li class="custom-link" id="desktop-template-link">
+        <p data-navigo="templates">Templates</p>
+      </li>
+      <li class="custom-link" id="desktop-donate-link">
+        <p data-navigo="donate">Donate</p>
+      </li>
+    </ul>
+  </div>
+</div>

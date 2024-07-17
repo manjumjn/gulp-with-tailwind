@@ -1,0 +1,185 @@
+<form
+    action="#"
+    class="card bg-base-100 mt-4 flex w-96 flex-col gap-2 p-6 shadow"
+    data-tab-content="issue-grant"
+    id="issue-grant-form"
+>
+  <button class="btn mb-2" onclick="issue_grant_docs.showModal()" type="button">
+    Docs for issue grant
+  </button>
+  <div>
+    <label class="label label-text" for="issue_grant_title">Title</label>
+    <input
+        class="input input-bordered w-full"
+        id="issue_grant_title"
+        name="title"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" data-tip="hello" for="issue_grant_wallet"
+    >Receiver wallet address</label
+    >
+    <input
+        class="input input-bordered w-full"
+        id="issue_grant_wallet"
+        name="wallet"
+        placeholder="Type here"
+        type="text"
+    />
+  </div>
+  <div>
+    <label class="label label-text" data-tip="hello" for="issue_grant_amount"
+    >Amount</label
+    >
+    <input
+        class="input input-bordered w-full"
+        id="issue_grant_amount"
+        name="amount"
+        placeholder="Type here"
+        type="number"
+    />
+  </div>
+  <div>
+    <label
+        class="label label-text"
+        data-tip="hello"
+        for="issue_grant_description"
+    >Description</label
+    >
+    <textarea
+        class="textarea textarea-bordered w-full"
+        id="issue_grant_description"
+        name="description"
+        placeholder="Type your description"
+    ></textarea>
+  </div>
+  <button class="btn btn-primary mt-2">Submit Grant</button>
+
+  <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+          const validation = new window.JustValidate("#issue-grant-form");
+
+          validation
+              .addField("#issue_grant_title", [
+                  {
+                      rule: "required",
+                      errorMessage: "Title is required",
+                  }
+              ])
+              .addField("#issue_grant_wallet", [
+                  {
+                      rule: "required",
+                      errorMessage: "Wallet address is required",
+                  },
+                  {
+                      rule: "minLength",
+                      value: 42,
+                      errorMessage: "Wallet address must be 42 characters long",
+                  },
+                  {
+                      rule: "maxLength",
+                      value: 42,
+                      errorMessage: "Wallet address must be 42 characters long",
+                  },
+              ])
+              .addField("#issue_grant_amount", [
+                  {
+                      rule: "required",
+                      errorMessage: "Amount is required",
+                  },
+                  {
+                      rule: "number",
+                      errorMessage: "Amount must be a number",
+                  },
+                  {
+                      rule: "minNumber",
+                      value: 0.01,
+                      errorMessage: "Amount must be greater than 0",
+                  },
+              ])
+              .addField("#issue_grant_description", [
+                  {
+                      rule: "required",
+                      errorMessage: "Description is required",
+                  },
+              ])
+              .onSuccess(async (event) => {
+                  event.preventDefault();
+                  addOverlay("issue-grant-form");
+                  const formData = new FormData(event.target);
+                  const data = Object.fromEntries(formData);
+
+                  try {
+                      checkConnection();
+                      const calldata = (
+                          await treasury_contract.releaseNativeToken.populateTransaction(
+                              data.wallet,
+                              data.amount
+                          )
+                      ).data;
+                      const tx = await mini_contract.proposeWithTitle(
+                          [treasury_address],
+                          [0],
+                          [calldata],
+                          data.description,
+                          data.title
+                      );
+                      tx.wait();
+                      reloadPosts();
+                      document.getElementById("issue-grant-form").reset();
+                  } catch (error) {
+                      console.error("Error:", error);
+                      showToast("Failed to issue grant!");
+                  } finally {
+                      removeOverlay("issue-grant-form");
+                  }
+
+                  showToast("Grant issued successfully!");
+              });
+      });
+  </script>
+</form>
+
+<dialog class="modal" id="issue_grant_docs">
+  <div class="modal-box">
+    <h3 class="text-lg font-bold">Form Explanation</h3>
+    <div class="space-y-4 py-4">
+      <p>
+        This form is designed to collect all necessary information for issuing a
+        new grant within the MiniDAO platform. Each field in the form collects
+        specific details required to process and approve the grant request:
+      </p>
+      <ul class="space-y-2">
+        <li>
+          <strong>Title:</strong> A brief title summarizing the purpose of the
+          grant.
+        </li>
+        <li>
+          <strong>Receiver wallet address:</strong> The cryptocurrency wallet
+          address where the grant funds will be transferred upon approval.
+        </li>
+        <li>
+          <strong>Amount:</strong> The monetary value requested for the grant,
+          expressed in US dollars.
+        </li>
+        <li>
+          <strong>Description:</strong> A detailed description outlining the
+          goals and requirements of the grant.
+        </li>
+      </ul>
+      <p>
+        Once all fields are filled out, the user can submit the form by clicking
+        the "Submit Grant" button. The provided information will then be
+        processed for grant issuance.
+      </p>
+    </div>
+    <div class="modal-action">
+      <form method="dialog">
+        <!-- if there is a button in form, it will close the modal -->
+        <button class="btn">Close</button>
+      </form>
+    </div>
+  </div>
+</dialog>
